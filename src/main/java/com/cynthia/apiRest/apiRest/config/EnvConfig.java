@@ -8,7 +8,6 @@ import java.util.List;
 
 @Configuration
 public class EnvConfig {
-
     @PostConstruct
     public void loadEnv() {
         Dotenv dotenv = Dotenv.configure().load();
@@ -21,6 +20,7 @@ public class EnvConfig {
             }
         }
 
+        // Establecer propiedades del sistema solo si no están ya definidas
         dotenv.entries().forEach(entry -> {
             if (System.getProperty(entry.getKey()) == null) {
                 System.setProperty(entry.getKey(), entry.getValue());
