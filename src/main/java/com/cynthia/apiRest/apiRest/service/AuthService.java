@@ -36,7 +36,7 @@ public class AuthService {
 
         userRepository.save(user);
 
-        var jwtToken = jwtUtils.generateToken((UserDetails) user);
+        var jwtToken = jwtUtils.generateToken(user);
         return AuthResponse.builder()
                 .token(jwtToken)
                 .build();
@@ -51,7 +51,7 @@ public class AuthService {
         );
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-        var jwtToken = jwtUtils.generateToken((UserDetails) user);
+        var jwtToken = jwtUtils.generateToken(user);
         return AuthResponse.builder()
                 .token(jwtToken)
                 .build();

@@ -4,6 +4,7 @@ import com.cynthia.apiRest.apiRest.security.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -29,12 +30,25 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req ->
-                        req.requestMatchers("/api/auth/**").permitAll()
+                        req
+                                // Endpoints públicos
+                                .requestMatchers("/").permitAll()
+                                .requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/productos").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/productos/**").permitAll()
+
+                                // Endpoints protegidos por roles
+                                .requestMatchers(HttpMethod.POST, "/productos/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.PUT, "/productos/**").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.DELETE, "/productos/**").hasRole("ADMIN")
+
+                                // Todos los demás endpoints requieren autenticación
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 
