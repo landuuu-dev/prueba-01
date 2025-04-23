@@ -21,6 +21,12 @@ public class Producto {
     @ManyToOne
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;
+    @Column(nullable = false)
+    private String imagenPrincipal; // Puede ser una URL o nombre del archivo subido
+
+    private String imagenExtra1;
+    private String imagenExtra2;
+
 
 
     public Long getId() {
@@ -61,5 +67,29 @@ public class Producto {
 
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
+    }
+
+    public String getImagenPrincipal() {
+        return imagenPrincipal;
+    }
+
+    public void setImagenPrincipal(String imagenPrincipal) {
+        this.imagenPrincipal = imagenPrincipal;
+    }
+
+    public String getImagenExtra1() {
+        return imagenExtra1;
+    }
+
+    public void setImagenExtra1(String imagenExtra1) {
+        this.imagenExtra1 = imagenExtra1;
+    }
+
+    public String getImagenExtra2() {
+        return imagenExtra2;
+    }
+
+    public void setImagenExtra2(String imagenExtra2) {
+        this.imagenExtra2 = imagenExtra2;
     }
 }

@@ -36,6 +36,7 @@ public class SecurityConfig {
                         req
                                 .requestMatchers("/").permitAll()
                                 .requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers("/uploads/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/productos").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/productos/**").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/productos/**").hasRole("ADMIN")
