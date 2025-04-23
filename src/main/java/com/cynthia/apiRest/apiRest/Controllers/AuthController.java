@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
@@ -47,4 +49,30 @@ public class AuthController {
         userRepository.save(user);
         return ResponseEntity.ok("Usuario promovido a ADMIN");
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/users")
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = userRepository.findAll(); // Obtiene todos los usuarios
+        return ResponseEntity.ok(users); // Retorna la lista de usuarios
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/users/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        User user = userRepository.findById(Math.toIntExact(id))
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
+        return ResponseEntity.ok(user);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<String> deleteUserById(@PathVariable Long id) {
+        User user = userRepository.findById(Math.toIntExact(id))
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
+        userRepository.delete(user);
+        return ResponseEntity.ok("Usuario eliminado correctamente");
+    }
+
+
 }
