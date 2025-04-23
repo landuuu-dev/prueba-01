@@ -15,14 +15,10 @@ public class ProductoController {
 
 
     @GetMapping
-    public List<Producto> getAllProductos(@RequestParam(required = false) Long id) {
-        if (id != null) {
-            return productoRepository.findById(id)
-                    .map(List::of) // Convierte el producto encontrado a una lista
-                    .orElseThrow(() -> new RuntimeException("No se encontro el producto con el ID: " + id));
-        }
+    public List<Producto> getAllProductos() {
         return productoRepository.findAll();
     }
+
 
     @GetMapping("/id")
     public Producto obtenerProductoPorId(@RequestParam Long id) {
@@ -54,5 +50,8 @@ public class ProductoController {
      productoRepository.delete(producto);
      return "El producto con el ID: " + id + " se elimino correctamente";
     }
+
+
+
 
 }

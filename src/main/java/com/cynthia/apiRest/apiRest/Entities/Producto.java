@@ -18,6 +18,10 @@ public class Producto {
     @Column(length = 1000)
     @Size(max = 1000, message = "La descripción no puede exceder los 1000 caracteres")
     private String descripcion;
+    @ManyToOne
+    @JoinColumn(name = "categoria_id")
+    private Categoria categoria;
+
 
     public Long getId() {
         return id;
@@ -49,5 +53,13 @@ public class Producto {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
     }
 }
