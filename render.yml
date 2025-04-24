@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: api-rest-backend
+    runtime: java
+    buildCommand: ./mvnw clean package -DskipTests
+    startCommand: java -jar target/*.jar --spring.profiles.active=prod
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: crudDB  # Nombre de tu DB en Render
+          property: connectionString
