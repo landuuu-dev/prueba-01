@@ -11,6 +11,27 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./postgres:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
 
+  app:
+    build: .
+    restart: always
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/${SPRING_DATASOURCE_DB}
+      - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+      - SPRING_DATASOURCE_DB=${SPRING_DATASOURCE_DB}
+      - MYENV=${MYENV}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRATION=${JWT_EXPIRATION}
+      - USUARIO_ADMIN=${USUARIO_ADMIN}
+      - USUARIO_ADMIN_PASSWORD=${USUARIO_ADMIN_PASSWORD}
+      - API_KEY_RESEND=${API_KEY_RESEND}
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
 
+volumes:
+  postgres_data:
