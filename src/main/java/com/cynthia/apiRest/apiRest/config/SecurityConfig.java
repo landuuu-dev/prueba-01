@@ -31,22 +31,23 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(req ->
-                        req
-                                .requestMatchers("/").permitAll()
-                                .requestMatchers("/api/auth/**").permitAll()
-                                .requestMatchers("/uploads/**").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/productos").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/productos/**").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/productos/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.PUT, "/productos/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.DELETE, "/productos/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.GET, "/categorias/**").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/categorias/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.PUT, "/categorias/**").hasRole("ADMIN")
-                                .requestMatchers(HttpMethod.DELETE, "/categorias/**").hasRole("ADMIN")
-                                .anyRequest().authenticated()
+                .csrf(AbstractHttpConfigurer::disable) // Desactiva CSRF
+                .cors() // Habilita CORS
+                .and()
+                .authorizeHttpRequests(req -> req
+                        .requestMatchers("/").permitAll()
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/uploads/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/productos").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/productos/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/productos/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/productos/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/productos/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/categorias/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/categorias/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/categorias/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/categorias/**").hasRole("ADMIN")
+                        .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider())
